@@ -8,6 +8,8 @@ A product concept for **Story TV**, a short-form Indian drama streaming app: a f
 
 > This is a clickable prototype. All users, scores and shows are fictional.
 
+**Read the case:** [Story Predictor case deck (PDF)](docs/Story-Predictor-Case-Deck.pdf)
+
 ## The problem
 
 Viewers of short episodic dramas binge many episodes in one sitting, then leave. The hard part isn't getting them to watch. It's getting them to **come back tomorrow**.
