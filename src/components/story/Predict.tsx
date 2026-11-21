@@ -37,7 +37,7 @@ export function Predict(p: Props) {
 
         <div className="mt-4 grid grid-cols-4 gap-2">
           <Meta icon={<Play className="h-3.5 w-3.5" />} v="Ep 16" l="episode" />
-          <Meta icon={<Clock className="h-3.5 w-3.5" />} v={p.phase === "open" || p.phase === "locked" ? fmtDuration(left) : "Closed"} l="locks 9:00 PM" hot={p.phase === "open"} />
+          <Meta icon={<Clock className="h-3.5 w-3.5" />} v={p.phase === "open" || p.phase === "locked" ? fmtDuration(left) : "Closed"} l="locks tomorrow" hot={p.phase === "open"} />
           <Meta icon={<Zap className="h-3.5 w-3.5" />} v="100" l="points" />
           <Meta icon={<Target className="h-3.5 w-3.5" />} v={`${p.weeklyAccuracy}%`} l="weekly acc." />
         </div>
@@ -92,7 +92,7 @@ function Choose({ phase, selected, onSelect, onLock, onRelease }: Props) {
       ) : (
         <div data-guide="locked" className="mt-4 rounded-2xl border border-success/30 bg-success/10 p-4 animate-pop">
           <p className="flex items-center gap-2 text-sm font-bold text-success"><Lock className="h-4 w-4" />Prediction locked</p>
-          <p className="mt-1 text-xs text-muted-foreground">Your answer can't be changed now. The result unlocks when Episode 16 releases tonight at 9:30 PM.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Your answer can't be changed now. The result unlocks when Episode 16 releases tomorrow at 9:30 PM. Come back then to see how you did.</p>
           <GhostButton onClick={onRelease} className="mt-3 text-xs">Demo: release Episode 16 now</GhostButton>
         </div>
       )}

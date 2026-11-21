@@ -16,8 +16,8 @@ export type GuideStep = {
 
 export const STEPS: GuideStep[] = [
   {
-    title: "Home: a reason to come back tonight",
-    blurb: "Story TV already gives viewers stories. This card gives them tonight's twist to predict.",
+    title: "Home: a reason to come back tomorrow",
+    blurb: "Story TV already gives viewers stories. This card gives them tomorrow's twist to predict.",
     detail: "The Home screen looks like any OTT app. The new part is the red 'Your next story challenge' card: one question about tomorrow's episode, +100 free points, and the viewer's level and weekly rank.",
     doIt: "Tap 'Make your prediction'.",
     target: "challenge",
@@ -25,21 +25,21 @@ export const STEPS: GuideStep[] = [
   {
     title: "Pick an answer and lock it",
     blurb: "Choose who is hiding the secret. Change your mind freely until you lock.",
-    detail: "Daily-release show: predictions are open before Episode 16 drops and close at 9:00 PM. The viewer can switch answers as often as they like. Nothing counts until they lock.",
+    detail: "Daily-release show: the question appears as soon as Episode 15 ends. It stays open until tomorrow 9:00 PM, and Episode 16 drops at 9:30 PM tomorrow. The viewer can switch answers as often as they like. Nothing counts until they lock.",
     doIt: "Tap an answer, tap a different one, then tap 'Lock Prediction'.",
     target: "options",
   },
   {
     title: "Locked: no changes after this",
     blurb: "The answer is sealed before the outcome. That's what keeps it fair.",
-    detail: "Once locked, the options are disabled and the viewer sees when the result unlocks. A locked prediction is a promise to come back, and that return visit is the retention hook.",
+    detail: "Once locked, the options are disabled and the viewer sees when the result unlocks. A locked prediction is a promise to return tomorrow, and that return visit on a new day is the retention hook.",
     doIt: "Tap 'Demo: release Episode 16 now' to skip the wait.",
     target: "locked",
   },
   {
     title: "The new episode releases",
-    blurb: "'The reveal is here' is the notification-worthy moment that pulls viewers back.",
-    detail: "Episode 16 is out. The prediction can now be resolved, even if the viewer hasn't unlocked the paid episode. No scene, dialogue or footage is shown here.",
+    blurb: "'The reveal is here' pulls viewers back on a new day, not just later the same night.",
+    detail: "It's tomorrow at 9:30 PM and Episode 16 is out. The prediction can now be resolved, even if the viewer hasn't unlocked the paid episode. No scene, dialogue or footage is shown here.",
     doIt: "Tap 'Reveal my result'.",
     target: "reveal-btn",
   },
@@ -81,7 +81,7 @@ export const STEPS: GuideStep[] = [
   {
     title: "Story Comeback: win back lapsed viewers",
     blurb: "A viewer gone for 7 days gets a nudge and a spoiler-free recap.",
-    detail: "The notification 'You never found out who betrayed Riya.' opens a short recap built only from episodes the viewer has already watched, then a single button that continues from Episode 15.",
+    detail: "The notification 'You never found out who betrayed Riya.' opens a short recap built only from episodes the viewer has already watched, then a single button that continues from Episode 15. Limits are built in: at most 2 reminders a week, and none for shows the viewer has finished.",
     doIt: "Tap the notification, then 'Continue from Episode 15'.",
     target: "notif",
   },

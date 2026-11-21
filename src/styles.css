@@ -178,4 +178,4 @@ html[data-guide-target="notif"] [data-guide="notif"] {
   html[data-guide-open="true"] body { padding-bottom: 9rem; }
 }
 
-[data-guide] { scroll-margin-top: 96px; }
+[data-guide] { scroll-margin-top: 120px; }

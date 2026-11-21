@@ -27,7 +27,7 @@ export function StoryApp() {
   const [showPts, setShowPts] = useState(300);
   const [guideOpen, setGuideOpen] = useState(true);
   const [step, setStep] = useState(0);
-  const deadline = useMemo(() => Date.now() + (2 * 3600 + 14 * 60) * 1000, []);
+  const deadline = useMemo(() => Date.now() + (23 * 3600 + 14 * 60) * 1000, []);
   const lvl = levelFor(stats.lifetimeXp);
   const rank = rankIn(OVERALL_OTHERS, stats.weeklyPoints);
   const acc = pct(stats.weeklyCorrect, stats.weeklyTotal);
@@ -86,15 +86,16 @@ export function StoryApp() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="relative mx-auto min-h-screen w-full max-w-[390px] bg-background">
+      <div className="relative mx-auto min-h-screen w-full max-w-[390px] bg-background pt-8">
         {tab === "home" && <Home levelName={lvl.name} level={lvl.level} weeklyPoints={stats.weeklyPoints} rank={rank} phase={phase} hasNotif onChallenge={() => { setTab("predict"); adv(0); }} onBell={() => setOv("notif")} onPlay={(ep) => setOv({ ep })} />}
         {tab === "predict" && <Predict phase={phase} selected={selected} onSelect={setSelected} onLock={() => { setPhase("locked"); adv(1); }} onReveal={() => { reveal(); adv(3); }} onRelease={() => { setPhase("released"); adv(2); }} result={result} unlocked={unlocked} weeklyAccuracy={acc} deadline={deadline} onContinue={() => setOv({ ep: 16 })} onLeaderboard={() => setTab("leaderboard")} onBingeResolve={(c) => setStats((s) => resolvePrediction(s, c))} />}
         {tab === "leaderboard" && <Leaderboard weeklyPoints={stats.weeklyPoints} accuracy={acc} showPoints={showPts} lifetimeXp={stats.lifetimeXp} />}
         {tab === "profile" && <Profile stats={stats} />}
 
-        <div className={cn("fixed bottom-[68px] left-1/2 z-30 flex -translate-x-1/2 gap-2", guideOpen && "max-[1179px]:hidden")}>
-          {!guideOpen && <button onClick={() => goStep(step)} className="rounded-full border border-primary/40 bg-primary/15 px-3 py-1.5 text-[11px] font-semibold text-primary-glow">Guided demo</button>}
-          <button onClick={() => setDemo(true)} className="rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">Demo</button>
+        <div className="fixed left-1/2 top-0 z-30 flex h-8 w-full max-w-[390px] -translate-x-1/2 items-center justify-between border-b border-border bg-background/90 px-5 text-[11px] font-semibold backdrop-blur">
+          <button onClick={() => (guideOpen ? setGuideOpen(false) : goStep(step))} className="text-primary-glow">{guideOpen ? "Hide guide" : "Guided demo"}</button>
+          <span className="text-muted-foreground">Prototype · fictional data</span>
+          <button onClick={() => setDemo(true)} className="text-muted-foreground">Demo controls</button>
         </div>
         <GuidePanel open={guideOpen} step={step} onStep={goStep} onOpen={() => setGuideOpen(true)} onClose={() => setGuideOpen(false)} onDemo={() => setDemo(true)} />
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-[390px] -translate-x-1/2 grid-cols-4 border-t border-border bg-background/95 pb-4 pt-2 backdrop-blur">
@@ -138,6 +139,7 @@ export function StoryApp() {
               <ol className="mt-4 space-y-3">{["Riya discovered a photograph in her husband's drawer.", "Her brother denied knowing anything about it.", "An unknown caller revealed a new clue.", "The mystery remains unresolved."].map((t, i) => (
                 <li key={t} className="flex gap-3 rounded-2xl bg-card p-3 text-sm"><span className="font-bold text-primary">{i + 1}</span>{t}</li>))}</ol>
               <PrimaryButton className="mt-5" onClick={() => setOv({ ep: 15 })}><Play className="h-4 w-4 fill-current" />Continue from Episode 15</PrimaryButton>
+              <p className="mt-3 text-center text-[11px] leading-relaxed text-muted-foreground">Story Comeback sends at most 2 reminders a week, and none for shows you've finished.</p>
             </div>
           </Overlay>
         )}
