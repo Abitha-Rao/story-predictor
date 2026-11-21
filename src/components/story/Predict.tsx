@@ -66,7 +66,7 @@ function Choose({ phase, selected, onSelect, onLock, onRelease }: Props) {
   const locked = phase === "locked";
   return (
     <div className="mt-5">
-      <div className="space-y-2.5">
+      <div data-guide="options" className="space-y-2.5 rounded-2xl">
         {OPTIONS.map((o) => {
           const on = selected === o.id;
           return (
@@ -90,7 +90,7 @@ function Choose({ phase, selected, onSelect, onLock, onRelease }: Props) {
           <p className="mt-2 text-center text-xs text-muted-foreground">You can change your answer until you lock it. Predictions close before Episode 16 releases.</p>
         </div>
       ) : (
-        <div className="mt-4 rounded-2xl border border-success/30 bg-success/10 p-4 animate-pop">
+        <div data-guide="locked" className="mt-4 rounded-2xl border border-success/30 bg-success/10 p-4 animate-pop">
           <p className="flex items-center gap-2 text-sm font-bold text-success"><Lock className="h-4 w-4" />Prediction locked</p>
           <p className="mt-1 text-xs text-muted-foreground">Your answer can't be changed now. The result unlocks when Episode 16 releases tonight at 9:30 PM.</p>
           <GhostButton onClick={onRelease} className="mt-3 text-xs">Demo: release Episode 16 now</GhostButton>
@@ -110,7 +110,7 @@ function Released({ onReveal, unlocked }: { onReveal: () => void; unlocked: bool
       <p className="mt-4 text-[11px] font-bold tracking-[0.2em] text-primary-glow">EPISODE 16 IS OUT</p>
       <p className="mt-1 font-display text-2xl font-bold">THE REVEAL IS HERE</p>
       <p className="mt-2 text-sm text-muted-foreground">{unlocked ? "Your prediction has been resolved." : "See how you did — no spoilers, no scenes."}</p>
-      <PrimaryButton onClick={onReveal} className="mt-5">Reveal my result</PrimaryButton>
+      <div data-guide="reveal-btn" className="mt-5 rounded-2xl"><PrimaryButton onClick={onReveal}>Reveal my result</PrimaryButton></div>
     </div>
   );
 }
@@ -151,13 +151,13 @@ function Reveal({ r, unlocked, selected, onContinue, onLeaderboard }: { r: Revea
         </div>
       )}
 
-      <div className="mt-3 grid grid-cols-3 gap-2">
+      <div data-guide="result" className="mt-3 grid grid-cols-3 gap-2 rounded-2xl">
         <Delta icon={<Users className="h-4 w-4" />} v={`${opt?.share ?? 0}%`} l="picked the same" />
         <Delta icon={<Target className="h-4 w-4" />} v={`${r.accBefore}→${r.accAfter}%`} l="weekly accuracy" />
         <Delta icon={<TrendingUp className="h-4 w-4" />} v={r.rankBefore === r.rankAfter ? `#${r.rankAfter}` : `#${r.rankBefore}→#${r.rankAfter}`} l={r.rankBefore > r.rankAfter ? `up ${r.rankBefore - r.rankAfter} places` : "rank held"} up={r.rankBefore > r.rankAfter} />
       </div>
       <div className="mt-4 space-y-2">
-        <PrimaryButton onClick={onContinue}><Play className="h-4 w-4 fill-current" />Continue the story</PrimaryButton>
+        <div data-guide="continue" className="rounded-2xl"><PrimaryButton onClick={onContinue}><Play className="h-4 w-4 fill-current" />Continue the story</PrimaryButton></div>
         <GhostButton onClick={onLeaderboard}><Trophy className="h-4 w-4" />See leaderboard</GhostButton>
       </div>
     </div>
@@ -183,7 +183,7 @@ function Binge({ onResolve }: { onResolve: (c: boolean) => void }) {
   const q = BINGE_QUESTIONS[idx];
   const watchedThrough = 7 + idx;
   return (
-    <section className="mt-8">
+    <section data-guide="binge" className="mt-8 rounded-2xl">
       <div className="flex items-center gap-3">
         <img src={POSTERS.family} alt="Ghar Ki Lakshmi" loading="lazy" width={768} height={1152} className="h-16 w-12 rounded-lg object-cover" />
         <div className="flex-1">

@@ -49,7 +49,7 @@ export function Home({ levelName, level, weeklyPoints, rank, phase, onChallenge,
           <Pill>Ep 16 · +100</Pill>
         </div>
         <p className="mt-3 font-display text-xl font-semibold leading-snug">Will Riya discover who has been hiding the truth?</p>
-        <button onClick={onChallenge} className="mt-4 flex w-full items-center justify-between rounded-2xl bg-gradient-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition active:scale-[0.98]">
+        <button data-guide="challenge" onClick={onChallenge} className="mt-4 flex w-full items-center justify-between rounded-2xl bg-gradient-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition active:scale-[0.98]">
           {cta}<ChevronRight className="h-4 w-4" />
         </button>
         <div className="mt-4 grid grid-cols-3 gap-2 text-center">

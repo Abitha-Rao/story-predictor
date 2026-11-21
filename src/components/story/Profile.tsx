@@ -16,7 +16,7 @@ export function Profile({ stats }: { stats: Stats }) {
         </div>
       </div>
 
-      <div className="mt-5 rounded-3xl bg-card p-5">
+      <div data-guide="level" className="mt-5 rounded-3xl bg-card p-5">
         <div className="flex items-baseline justify-between">
           <p className="font-display text-3xl font-bold tabular-nums">{stats.lifetimeXp.toLocaleString("en-IN")}<span className="ml-1 text-sm font-semibold text-muted-foreground">lifetime XP</span></p>
         </div>

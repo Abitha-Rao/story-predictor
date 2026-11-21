@@ -153,3 +153,29 @@
     font-family: var(--font-sans);
   }
 }
+
+
+/* Guided demo: pulse the element the current step points at */
+@keyframes guide-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.66 0.22 28 / 0.55), 0 0 0 2px oklch(0.66 0.22 28 / 0.9); }
+  50% { box-shadow: 0 0 0 8px oklch(0.66 0.22 28 / 0), 0 0 0 2px oklch(0.66 0.22 28 / 0.9); }
+}
+html[data-guide-target="challenge"] [data-guide="challenge"],
+html[data-guide-target="options"] [data-guide="options"],
+html[data-guide-target="locked"] [data-guide="locked"],
+html[data-guide-target="reveal-btn"] [data-guide="reveal-btn"],
+html[data-guide-target="result"] [data-guide="result"],
+html[data-guide-target="continue"] [data-guide="continue"],
+html[data-guide-target="binge"] [data-guide="binge"],
+html[data-guide-target="board"] [data-guide="board"],
+html[data-guide-target="level"] [data-guide="level"],
+html[data-guide-target="notif"] [data-guide="notif"] {
+  animation: guide-pulse 1.8s ease-in-out infinite;
+  position: relative;
+}
+@media (max-width: 1179px) {
+  html[data-guide-open="true"] .guide-pad { padding-bottom: 12rem; }
+  html[data-guide-open="true"] body { padding-bottom: 9rem; }
+}
+
+[data-guide] { scroll-margin-top: 96px; }

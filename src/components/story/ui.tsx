@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 export function Overlay({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("fixed inset-y-0 left-1/2 z-40 w-full max-w-[390px] -translate-x-1/2 overflow-y-auto no-scrollbar bg-background animate-fade-up", className)}>
+    <div className={cn("guide-pad fixed inset-y-0 left-1/2 z-40 w-full max-w-[390px] -translate-x-1/2 overflow-y-auto no-scrollbar bg-background animate-fade-up", className)}>
       {children}
     </div>
   );

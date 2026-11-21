@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Home as HomeIcon, Sparkles, Trophy, User, X, Play, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { INITIAL_STATS, OVERALL_OTHERS, levelFor, pct, rankIn, resolvePrediction, weeklyReset } from "@/lib/predictor";
@@ -8,6 +8,7 @@ import { Predict } from "./Predict";
 import { Leaderboard } from "./Leaderboard";
 import { Profile } from "./Profile";
 import { Overlay, PrimaryButton, GhostButton, Disclaimer } from "./ui";
+import { GuidePanel, STEPS } from "./Guide";
 
 export type Phase = "open" | "locked" | "released" | "revealed";
 export type RevealResult = { correct: boolean; accBefore: number; accAfter: number; rankBefore: number; rankAfter: number };
@@ -24,6 +25,8 @@ export function StoryApp() {
   const [ov, setOv] = useState<Ov>(null);
   const [demo, setDemo] = useState(false);
   const [showPts, setShowPts] = useState(300);
+  const [guideOpen, setGuideOpen] = useState(true);
+  const [step, setStep] = useState(0);
   const deadline = useMemo(() => Date.now() + (2 * 3600 + 14 * 60) * 1000, []);
   const lvl = levelFor(stats.lifetimeXp);
   const rank = rankIn(OVERALL_OTHERS, stats.weeklyPoints);
@@ -44,15 +47,56 @@ export function StoryApp() {
     if (s === 5) { setPhase("released"); setSelected("brother"); setUnlocked(false); setTab("predict"); }
   };
 
+  const adv = (from: number) => setStep((s) => (s === from ? from + 1 : s));
+  const resolvedState = (unl: boolean) => {
+    const n = resolvePrediction(INITIAL_STATS, true);
+    setResult({ correct: true, accBefore: pct(INITIAL_STATS.weeklyCorrect, INITIAL_STATS.weeklyTotal), accAfter: pct(n.weeklyCorrect, n.weeklyTotal), rankBefore: rankIn(OVERALL_OTHERS, INITIAL_STATS.weeklyPoints), rankAfter: rankIn(OVERALL_OTHERS, n.weeklyPoints) });
+    setStats(n); setShowPts(400); setSelected("brother"); setPhase("revealed"); setUnlocked(unl);
+  };
+  /** Put the app into the state that guided step `i` explains. */
+  const goStep = (i: number) => {
+    const k = Math.max(0, Math.min(STEPS.length - 1, i));
+    setStep(k); setGuideOpen(true); setStats(INITIAL_STATS); setResult(null); setOv(null); setDemo(false); setUnlocked(true); setShowPts(300);
+    if (k === 0) { setPhase("open"); setSelected(null); setTab("home"); }
+    if (k === 1) { setPhase("open"); setSelected(null); setTab("predict"); }
+    if (k === 2) { setPhase("locked"); setSelected("brother"); setTab("predict"); }
+    if (k === 3) { setPhase("released"); setSelected("brother"); setTab("predict"); }
+    if (k === 4) { resolvedState(true); setTab("predict"); }
+    if (k === 5) { resolvedState(false); setTab("predict"); }
+    if (k === 6) { resolvedState(false); setTab("predict"); }
+    if (k === 7) { resolvedState(true); setTab("leaderboard"); }
+    if (k === 8) { resolvedState(true); setTab("profile"); }
+    if (k === 9) { setPhase("open"); setSelected(null); setTab("home"); setOv("notif"); }
+    window.scrollTo(0, 0);
+    // bring the highlighted element into view, clear of the guide card
+    setTimeout(() => document.querySelector(`[data-guide="${STEPS[k]!.target}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+  };
+
+  useEffect(() => {
+    const t = setTimeout(() => document.querySelector('[data-guide="challenge"]')?.scrollIntoView({ behavior: "smooth", block: "start" }), 600);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.setAttribute("data-guide-target", guideOpen ? STEPS[step]!.target : "");
+    el.setAttribute("data-guide-open", guideOpen ? "true" : "false");
+    return () => { el.removeAttribute("data-guide-target"); el.removeAttribute("data-guide-open"); };
+  }, [guideOpen, step]);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="relative mx-auto min-h-screen w-full max-w-[390px] bg-background">
-        {tab === "home" && <Home levelName={lvl.name} level={lvl.level} weeklyPoints={stats.weeklyPoints} rank={rank} phase={phase} hasNotif onChallenge={() => setTab("predict")} onBell={() => setOv("notif")} onPlay={(ep) => setOv({ ep })} />}
-        {tab === "predict" && <Predict phase={phase} selected={selected} onSelect={setSelected} onLock={() => setPhase("locked")} onReveal={reveal} onRelease={() => setPhase("released")} result={result} unlocked={unlocked} weeklyAccuracy={acc} deadline={deadline} onContinue={() => setOv({ ep: 16 })} onLeaderboard={() => setTab("leaderboard")} onBingeResolve={(c) => setStats((s) => resolvePrediction(s, c))} />}
+        {tab === "home" && <Home levelName={lvl.name} level={lvl.level} weeklyPoints={stats.weeklyPoints} rank={rank} phase={phase} hasNotif onChallenge={() => { setTab("predict"); adv(0); }} onBell={() => setOv("notif")} onPlay={(ep) => setOv({ ep })} />}
+        {tab === "predict" && <Predict phase={phase} selected={selected} onSelect={setSelected} onLock={() => { setPhase("locked"); adv(1); }} onReveal={() => { reveal(); adv(3); }} onRelease={() => { setPhase("released"); adv(2); }} result={result} unlocked={unlocked} weeklyAccuracy={acc} deadline={deadline} onContinue={() => setOv({ ep: 16 })} onLeaderboard={() => setTab("leaderboard")} onBingeResolve={(c) => setStats((s) => resolvePrediction(s, c))} />}
         {tab === "leaderboard" && <Leaderboard weeklyPoints={stats.weeklyPoints} accuracy={acc} showPoints={showPts} lifetimeXp={stats.lifetimeXp} />}
         {tab === "profile" && <Profile stats={stats} />}
 
-        <button onClick={() => setDemo(true)} className="fixed bottom-[68px] left-1/2 z-30 -translate-x-1/2 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">Demo</button>
+        <div className={cn("fixed bottom-[68px] left-1/2 z-30 flex -translate-x-1/2 gap-2", guideOpen && "max-[1179px]:hidden")}>
+          {!guideOpen && <button onClick={() => goStep(step)} className="rounded-full border border-primary/40 bg-primary/15 px-3 py-1.5 text-[11px] font-semibold text-primary-glow">Guided demo</button>}
+          <button onClick={() => setDemo(true)} className="rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">Demo</button>
+        </div>
+        <GuidePanel open={guideOpen} step={step} onStep={goStep} onOpen={() => setGuideOpen(true)} onClose={() => setGuideOpen(false)} onDemo={() => setDemo(true)} />
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-[390px] -translate-x-1/2 grid-cols-4 border-t border-border bg-background/95 pb-4 pt-2 backdrop-blur">
           {([["home", "Home", HomeIcon], ["predict", "Predict", Sparkles], ["leaderboard", "Leaderboard", Trophy], ["profile", "Profile", User]] as const).map(([k, l, I]) => (
             <button key={k} onClick={() => { setTab(k); window.scrollTo(0, 0); }} className={cn("flex flex-col items-center gap-1 text-[11px] font-semibold", tab === k ? "text-primary" : "text-muted-foreground")}><I className="h-5 w-5" />{l}</button>
@@ -77,7 +121,7 @@ export function StoryApp() {
         {ov === "notif" && (
           <Overlay className="flex flex-col items-center justify-center bg-gradient-challenge px-5">
             <p className="font-display text-6xl font-light">9:12</p><p className="text-sm text-muted-foreground">7 days since your last visit</p>
-            <button onClick={() => setOv("comeback")} className="mt-10 w-full rounded-2xl bg-card/90 p-4 text-left shadow-card animate-pop">
+            <button data-guide="notif" onClick={() => setOv("comeback")} className="mt-10 w-full rounded-2xl bg-card/90 p-4 text-left shadow-card animate-pop">
               <p className="text-[11px] font-bold text-primary-glow">STORY TV · now</p>
               <p className="mt-1 text-sm font-semibold">You never found out who betrayed Riya.</p>
               <p className="text-xs text-muted-foreground">Tap for your 30-second recap of The Last Promise</p>
