@@ -9,9 +9,9 @@ export function Profile({ stats }: { stats: Stats }) {
   return (
     <div className="px-5 pb-28 pt-6 animate-fade-up">
       <div className="flex items-center gap-4">
-        <div className="grid h-16 w-16 place-items-center rounded-full bg-gradient-primary font-display text-2xl font-bold text-primary-foreground shadow-glow">A</div>
+        <div className="grid h-16 w-16 place-items-center rounded-full bg-gradient-primary font-display text-2xl font-bold text-primary-foreground shadow-glow">S</div>
         <div>
-          <h1 className="font-display text-2xl font-bold">abitha_watches</h1>
+          <h1 className="font-display text-2xl font-bold">story_viewer</h1>
           <p className="text-sm text-muted-foreground">Level {lvl.level} · {lvl.name}</p>
         </div>
       </div>

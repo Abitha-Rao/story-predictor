@@ -52,7 +52,7 @@ export function StoryApp() {
         {tab === "leaderboard" && <Leaderboard weeklyPoints={stats.weeklyPoints} accuracy={acc} showPoints={showPts} lifetimeXp={stats.lifetimeXp} />}
         {tab === "profile" && <Profile stats={stats} />}
 
-        <button onClick={() => setDemo(true)} className="fixed bottom-24 z-30 ml-[310px] rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">Demo</button>
+        <button onClick={() => setDemo(true)} className="fixed bottom-[68px] left-1/2 z-30 -translate-x-1/2 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">Demo</button>
         <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-[390px] -translate-x-1/2 grid-cols-4 border-t border-border bg-background/95 pb-4 pt-2 backdrop-blur">
           {([["home", "Home", HomeIcon], ["predict", "Predict", Sparkles], ["leaderboard", "Leaderboard", Trophy], ["profile", "Profile", User]] as const).map(([k, l, I]) => (
             <button key={k} onClick={() => { setTab(k); window.scrollTo(0, 0); }} className={cn("flex flex-col items-center gap-1 text-[11px] font-semibold", tab === k ? "text-primary" : "text-muted-foreground")}><I className="h-5 w-5" />{l}</button>

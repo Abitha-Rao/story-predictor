@@ -64,7 +64,10 @@ const TOP: Player[] = [
   { name: "PlotTwister", points: 2310, accuracy: 79 },
   { name: "MysteryGirl", points: 2120, accuracy: 76 },
 ];
-const NAMES = ["SaasBahuFan", "ChaiAndTwists", "KahaaniKing", "FilmyPriya", "TwistWaliMaa", "SherlockSharma", "DilSeDetective", "RahulReads", "AnjaliGuesses", "CliffhangerKid"];
+const PREFIXES = ["Filmy", "Chai", "Twist", "Drama", "Kahaani", "Plot", "Dil", "Saas", "Bahu", "Suspense", "Clue", "Mystery", "Cliff", "Binge", "Raaz", "Sherlock", "Thriller", "Masala", "Episode", "Story"];
+const SUFFIXES = ["Guru", "Fan", "Detective", "Queen", "King", "Watcher", "Wali", "Wala", "Hunter", "Ninja", "Master", "Lover", "Spotter", "Buff", "Scout", "Sleuth", "Rani", "Raja", "Junkie", "Pro"];
+// 20 x 20 unique, deterministic, number-free names
+const fillerName = (i: number) => `${PREFIXES[i % 20]}${SUFFIXES[Math.floor(i / 20) % 20]}`;
 
 /** Overall weekly board: other players only (current user is inserted by rank). */
 export const OVERALL_OTHERS: Player[] = [
@@ -72,7 +75,7 @@ export const OVERALL_OTHERS: Player[] = [
   ...Array.from({ length: 400 }, (_, i) => {
     const r = i + 4;
     return {
-      name: `${NAMES[r % NAMES.length]}${r}`,
+      name: fillerName(i),
       points: Math.round(2100 - (r - 4) * 6.95),
       accuracy: 74 - Math.floor(r / 12),
     };
