@@ -1,23 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { StoryApp } from "@/components/story/StoryApp";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Story Predictor — Story TV" },
+      { name: "description", content: "Predict the next twist in Story TV dramas, earn free points and climb the weekly leaderboard." },
+      { property: "og:title", content: "Story Predictor — Story TV" },
+      { property: "og:description", content: "Don't just watch the twist. Predict it." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Manrope:wght@400;600;700;800&display=swap" },
+    ],
+  }),
+  component: StoryApp,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
